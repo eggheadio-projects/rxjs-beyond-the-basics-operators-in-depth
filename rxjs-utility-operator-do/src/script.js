@@ -1,6 +1,10 @@
 // 'Rx' is not defined.
+import { Observable } from "rxjs";
+import { take, tap, map } from "rxjs/operators";
+import "rxjs/add/observable/interval";
 
-var foo = Rx.Observable.interval(200).take(4);
+var foo = Observable.interval(200);
+const takeFour = foo.pipe(take(4));
 
 /*
 foo: ---0---1---2---3--...
@@ -12,13 +16,20 @@ foo: ---0---1---2---3--...
      ---0---2---4---6--...
 */
 
-var bar = foo
-  .do(x => console.log('before ' + x))
-  .map(x => x * 2)
-  .do(x => console.log('after ' + x));
+var bar = takeFour.pipe(
+  tap((x) => console.log("before " + x)),
+  map((x) => x * 2),
+  tap((x) => console.log("after " + x))
+)
 
 bar.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  function (x) {
+    console.log("next " + x);
+  },
+  function (err) {
+    console.log("error " + err);
+  },
+  function () {
+    console.log("done");
+  }
 );
