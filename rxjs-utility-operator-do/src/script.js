@@ -1,4 +1,6 @@
-var foo = Rx.Observable.interval(200).take(4);
+import { Observable } from "rxjs";
+
+var foo = Observable.interval(200).take(4);
 
 /*
 foo: ---0---1---2---3--...
@@ -16,17 +18,7 @@ var bar = foo
   .do(x => console.log('after ' + x) || displayInPreview('after ' + x));
 
 bar.subscribe(
-  function (x) { console.log('next ' + x) || displayInPreview('next ' + x); },
-  function (err) { console.log('error ' + err) || displayInPreview('error ' + err); },
-  function () { console.log('done') || displayInPreview('done'); },
+  function (x) { console.log('next ' + x)},
+  function (err) { console.log('error ' + err)},
+  function () { console.log('done')},
 );
-
-
-
-// display in plunker preview
-function displayInPreview(string) {
-  var newDiv = document.createElement("div"); 
-  var newContent = document.createTextNode(string); 
-  newDiv.appendChild(newContent);
-  document.body.appendChild(newDiv)
-}
