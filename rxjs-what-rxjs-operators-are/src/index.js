@@ -22,17 +22,7 @@ Rx.Observable.prototype.multiplyBy = multiplyBy;
 var bar = foo.multiplyBy(100);
 
 bar.subscribe(
-  function (x) { console.log('next ' + x) || displayInPreview('next ' + x); },
-  function (err) { console.log('error ' + err) || displayInPreview('error ' + err); },
-  function () { console.log('done') || displayInPreview('done'); },
+  function (x) { console.log('next ' + x)},
+  function (err) { console.log('error ' + err)},
+  function () { console.log('done')},
 );
-
-
-
-// display in plunker preview
-function displayInPreview(string) {
-  var newDiv = document.createElement("div"); 
-  var newContent = document.createTextNode(string); 
-  newDiv.appendChild(newContent);
-  document.body.appendChild(newDiv)
-}
