@@ -10,7 +10,7 @@ var foo = Observable.of(1, 2, 3, 4, 5);
 
 function multiplyBy(multiplier) {
   var source = this;
-  var result = Observable.create(function subscribe(observer) {
+  var result = new Observable(function subscribe(observer) {
     source.subscribe(
       function (x) {
         observer.next(x * multiplier);
