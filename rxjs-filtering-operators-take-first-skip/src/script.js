@@ -1,16 +1,17 @@
 import { Observable } from "rxjs";
-import { filter } from "rxjs/operators";
+import { skip } from "rxjs/operators";
 import "rxjs/add/observable/interval";
 
-var foo = Observable.interval(1000);
+var foo = Observable.interval(100);
 
 /*
 --0--1--2--3--4--5--6--7-
- filter(x => x % 2 === 0)
---0-----2-----4-----6----
+         skip(5)
+         take(5)
+-----------------5--6--7-
 */
 
-var bar = foo.pipe(filter((x) => x % 2 === 0));
+var bar = foo.pipe(skip(5));
 
 bar.subscribe(
   function (x) { console.log('next ' + x)},
