@@ -13,9 +13,9 @@ foo: ---0---1---2---3--...
 */
 
 var bar = foo
-  .do(x => console.log('before ' + x) || displayInPreview('before ' + x))
+  .do(x => console.log('before ' + x))
   .map(x => x * 2)
-  .do(x => console.log('after ' + x) || displayInPreview('after ' + x));
+  .do(x => console.log('after ' + x));
 
 bar.subscribe(
   function (x) { console.log('next ' + x)},
