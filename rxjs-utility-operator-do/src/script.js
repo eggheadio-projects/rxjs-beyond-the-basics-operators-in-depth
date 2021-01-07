@@ -1,6 +1,6 @@
-import { Observable } from "rxjs";
+// 'Rx' is not defined.
 
-var foo = Observable.interval(200).take(4);
+var foo = Rx.Observable.interval(200).take(4);
 
 /*
 foo: ---0---1---2---3--...
