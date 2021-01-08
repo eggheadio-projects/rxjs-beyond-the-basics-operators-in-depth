@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { take, withLatestFrom } from "rxjs/operators";
+import { take, scan } from "rxjs/operators";
 import "rxjs/add/observable/of";
 import "rxjs/add/observable/zip";
 import "rxjs/add/observable/interval";
@@ -17,7 +17,7 @@ var takeFive = bar.pipe(take(5));
 -----h-----(he)--(hel)-(hell)(hello|)
 */
 
-var combined = foo.zip(takeFive, (x,y) => x).scan((acc, x) => acc+x, '');
+var combined = Observable.zip(foo, takeFive, (x,y) => x).pipe(scan((acc, x) => acc+x, ''));
 
 combined.subscribe(
   function (x) { console.log('next ' + x)},
