@@ -1,5 +1,13 @@
-var foo = Rx.Observable.of('h', 'e', 'l', 'l', 'o');
-var bar = Rx.Observable.interval(400).take(5);
+import { Observable } from "rxjs";
+import { take } from "rxjs/operators";
+import "rxjs/add/observable/of";
+import "rxjs/add/observable/zip";
+import "rxjs/add/observable/interval";
+
+
+var foo = Observable.of('h', 'e', 'l', 'l', 'o');
+var bar = Observable.interval(400)
+var takeFive = bar.pipe(take(5));
 
 /*
 (hello|)                  (foo)
@@ -18,20 +26,10 @@ var bar = Rx.Observable.interval(400).take(5);
 // withLatestFrom
 // zip
 
-var combined = Rx.Observable.zip(foo, bar, (x,y) => x);
+var combined = Observable.zip(foo, takeFive, (x) => x);
 
 combined.subscribe(
-  function (x) { console.log('next ' + x) || displayInPreview('next ' + x); },
-  function (err) { console.log('error ' + err) || displayInPreview('error ' + err); },
-  function () { console.log('done') || displayInPreview('done'); },
+  function (x) { console.log('next ' + x)},
+  function (err) { console.log('error ' + err)},
+  function () { console.log('done')},
 );
-
-
-
-// display in plunker preview
-function displayInPreview(string) {
-  var newDiv = document.createElement("div"); 
-  var newContent = document.createTextNode(string); 
-  newDiv.appendChild(newContent);
-  document.body.appendChild(newDiv)
-}
