@@ -1,11 +1,11 @@
-import { Observable, combineLatest } from "rxjs";
-import { take } from "rxjs/operators";
+import { Observable } from "rxjs";
+import { take, withLatestFrom } from "rxjs/operators";
 import "rxjs/add/observable/interval";
 
-var foo = Rx.Observable.interval(500).take(5)
-  .zip(Rx.Observable.of('H', 'e', 'l', 'l', 'o'), (_, c) => c);
-var bar = Rx.Observable.interval(300).take(7)
-  .zip(Rx.Observable.of(0, 1, 0, 1, 0, 1, 0), (_, x) => x);
+var foo = Observable.interval(500).take(5)
+  .zip(Observable.of('H', 'e', 'l', 'l', 'o'), (_, c) => c);
+var bar = Observable.interval(300).take(7)
+  .zip(Observable.of(0, 1, 0, 1, 0, 1, 0), (_, x) => x);
 
 /*
 ----H----e----l----l----o|     (foo)
@@ -17,17 +17,7 @@ var bar = Rx.Observable.interval(300).take(7)
 var combined = foo.withLatestFrom(bar, (c,n) => n === 1 ? c.toUpperCase() : c.toLowerCase());
 
 combined.subscribe(
-  function (x) { console.log('next ' + x) || displayInPreview('next ' + x); },
-  function (err) { console.log('error ' + err) || displayInPreview('error ' + err); },
-  function () { console.log('done') || displayInPreview('done'); },
+  function (x) { console.log('next ' + x)},
+  function (err) { console.log('error ' + err)},
+  function () { console.log('done')},
 );
-
-
-
-// display in plunker preview
-function displayInPreview(string) {
-  var newDiv = document.createElement("div"); 
-  var newContent = document.createTextNode(string); 
-  newDiv.appendChild(newContent);
-  document.body.appendChild(newDiv)
-}
