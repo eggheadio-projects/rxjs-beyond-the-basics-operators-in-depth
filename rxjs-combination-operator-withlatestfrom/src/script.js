@@ -1,3 +1,7 @@
+import { Observable, combineLatest } from "rxjs";
+import { take } from "rxjs/operators";
+import "rxjs/add/observable/interval";
+
 var foo = Rx.Observable.interval(500).take(5)
   .zip(Rx.Observable.of('H', 'e', 'l', 'l', 'o'), (_, c) => c);
 var bar = Rx.Observable.interval(300).take(7)
