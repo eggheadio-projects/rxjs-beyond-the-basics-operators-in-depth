@@ -1,4 +1,11 @@
-var foo = Rx.Observable.interval(100).take(5);
+import { Observable } from "rxjs";
+import { take, delayWhen, delay } from "rxjs/operators";
+import "rxjs/add/observable/of";
+import "rxjs/add/observable/zip";
+import "rxjs/add/observable/interval";
+
+var foo = Observable.interval(100)
+var fooTakeFive = foo.pipe(take(5));
 
 /*
 --0--1--2--3--4|
@@ -7,9 +14,11 @@ var foo = Rx.Observable.interval(100).take(5);
 */
 
 // delay(1000)
-var result = foo.delayWhen( () =>
-  Rx.Observable.interval(1000).take(1)
-);
+// var result = fooTakeFive.pipe(delay(2000))
+
+var result = fooTakeFive.pipe(delayWhen( x =>
+  Observable.interval(x * x * 1000).pipe(take(1))
+));
 
 result.subscribe(
   function (x) { console.log('next ' + x)},
