@@ -1,10 +1,9 @@
 import { Observable } from "rxjs";
-import { take, delayWhen, delay } from "rxjs/operators";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/zip";
+import { take, debounce, debounceTime } from "rxjs/operators";
 import "rxjs/add/observable/interval";
 
-var foo = Observable.interval(100).take(5);
+var foo = Observable.interval(100);
+var fooTakeFive = foo.pipe(take(5));
 
 /*
 --0--1--2--3--4|
@@ -13,12 +12,22 @@ var foo = Observable.interval(100).take(5);
 ----0--1--2--3--4|
 */
 
-var result = foo.debounce(() =>
-  Observable.interval(1000).take(1)
-);
+// uncomment the 3 lines below to see debounce code
+// var result = fooTakeFive.pipe(debounce(() =>
+//   Observable.interval(1000)
+// ));
+
+// comment out line below to remove debounceTime code
+var result = fooTakeFive.pipe(debounceTime(5000));
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')}
+  function (x) {
+    console.log("next " + x);
+  },
+  function (err) {
+    console.log("error " + err);
+  },
+  function () {
+    console.log("done");
+  }
 );
