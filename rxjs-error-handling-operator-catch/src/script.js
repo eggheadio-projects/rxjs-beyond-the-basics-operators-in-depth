@@ -1,7 +1,14 @@
-var foo = Rx.Observable.interval(500)
-  .zip(Rx.Observable.of('a','b','c','d',2), (x,y)=>y);
+// WIP https://auth0.com/blog/whats-new-in-rxjs-6/
 
-var bar = foo.map(x => x.toUpperCase());
+import { Observable } from "rxjs";
+import { map, catchError } from 'rxjs/operators';
+import "rxjs/add/observable/interval";
+import "rxjs/add/observable/of";
+import "rxjs/add/observable/zip";
+
+var foo = Math.random()
+var fooInterval = Observable.interval(500);
+var fooCombined = Observable.zip(foo, fooInterval, (x)=> x)
 
 /*
 --a--b--c--d--2|     (foo)
@@ -11,19 +18,17 @@ catch(# => -Z|)
 --A--B--C--D--Z|
 */
 
-var result = bar.catch(error => Rx.Observable.of('Z'));
+var bar = fooCombined.pipe(
+  map(x => {
+    return x < 0.5
+  }),
+  catchError(e => {
+    return Observable.of(e)
+  }) 
+)
 
-result.subscribe(
-  function (x) { console.log('next ' + x) || displayInPreview('next ' + x); },
-  function (err) { console.log('error ' + err) || displayInPreview('error ' + err); },
-  function () { console.log('done') || displayInPreview('done'); },
+bar.subscribe(
+  function (x) { console.log('next ' + x)},
+  function (err) { console.log('error ' + err)},
+  function () { console.log('done')}
 );
-
-
-// display in plunker preview
-function displayInPreview(string) {
-  var newDiv = document.createElement("div"); 
-  var newContent = document.createTextNode(string); 
-  newDiv.appendChild(newContent);
-  document.body.appendChild(newDiv)
-}
