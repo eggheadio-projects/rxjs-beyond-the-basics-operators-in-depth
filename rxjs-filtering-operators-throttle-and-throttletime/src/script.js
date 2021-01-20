@@ -2,7 +2,8 @@ import { Observable } from "rxjs";
 import { take, throttleTime } from "rxjs/operators";
 import "rxjs/add/observable/interval";
 
-var foo = Observable.interval(500)
+// setting the interval to 1000, makes the output the same as the instructors. 
+var foo = Observable.interval(1000)
 var fooTakeFive = foo.pipe(take(5));
 
 /*
