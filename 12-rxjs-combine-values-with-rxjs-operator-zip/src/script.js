@@ -6,8 +6,9 @@ import "rxjs/add/observable/interval";
 
 
 var foo = Observable.of('h', 'e', 'l', 'l', 'o');
-var bar = Observable.interval(400)
-var takeFive = bar.pipe(take(5));
+var bar = Observable.interval(400).pipe(
+  take(5)
+)
 
 /*
 (hello|)                  (foo)
@@ -26,7 +27,7 @@ var takeFive = bar.pipe(take(5));
 // withLatestFrom
 // zip
 
-var combined = Observable.zip(foo, takeFive, (x) => x);
+var combined = Observable.zip(foo, bar, (x) => x);
 
 combined.subscribe(
   function (x) { console.log('next ' + x)},

@@ -11,7 +11,10 @@ var foo = Observable.interval(100);
 -----------------5--6--7-
 */
 
-var bar = foo.pipe(take(5));
+// uncomment below to see skip and take operators output
+// var bar = foo.pipe(skip(5))
+// var bar = foo.pipe(take(5));
+var bar = foo.pipe(first())
 
 bar.subscribe(
   function (x) {

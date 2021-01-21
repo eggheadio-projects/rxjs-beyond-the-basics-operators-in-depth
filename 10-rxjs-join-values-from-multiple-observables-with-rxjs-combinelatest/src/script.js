@@ -1,14 +1,14 @@
-// WIP
-
 import { Observable, combineLatest } from "rxjs";
 import { take } from "rxjs/operators";
 import "rxjs/add/observable/interval";
 
-var foo = Observable.interval(500);
-var takeFour = foo.pipe(take(4));
+var foo = Observable.interval(500).pipe(
+  take(4)
+);
 
-var bar = Observable.interval(300);
-var takeFive = bar.pipe(take(5));
+var bar = Observable.interval(300).pipe(
+  take(5)
+);
 
 /*
 ----0----1----2----(3|)     (weight)
@@ -17,10 +17,10 @@ var takeFive = bar.pipe(take(5));
 ----01--23-4--(56)-(7|)
 */
 
-// I'm unsure if this is possible anymore 
-// var combined = takeFour.pipe(combineLatest(takeFive, (x, y) => x + y));
+// This is deprecated. To combine observables, use combineLatest(observable, observable)
+// var combined = foo.pipe(combineLatest(bar, (x, y) => x + y));
 
-var combined = combineLatest(takeFour, takeFive, (x,y) => x+y);
+var combined = combineLatest(foo, bar, (x,y) => x+y);
 
 // merge: OR
 // combineLatest: AND

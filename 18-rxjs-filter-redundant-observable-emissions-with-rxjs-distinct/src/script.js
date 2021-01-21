@@ -1,18 +1,13 @@
 import { Observable } from "rxjs";
-import { take, distinctUntilChanged } from "rxjs/operators";
+import { take, distinctUntilChanged, zip } from "rxjs/operators";
 import "rxjs/add/observable/interval";
 import "rxjs/add/observable/of";
-import "rxjs/add/observable/zip";
 
-var foo = Observable.of('a', 'b', 'a', 'a', 'b')
-var fooInterval = Observable.interval(500);
-var fooTakeFive = fooInterval.pipe(take(5));
-var fooCombined = Observable.zip(foo, fooTakeFive, (x)=>x);
+var foo = Observable.interval(500).pipe(
+  zip(Observable.of('a', 'b', 'a', 'a', 'b'), (x,y)=>y),
+  take(5)
+);
 
-
-// var foo = Observable.interval(500)
-// var fooTakeFive = foo.pipe(take(5))
-// var fooZip = fooTakeFive.pipe(zip(Observable.of('a', 'b', 'a', 'a', 'b'), (x,y)=>y));
 
 /*
 --a--b--a--a--b|
@@ -20,7 +15,7 @@ var fooCombined = Observable.zip(foo, fooTakeFive, (x)=>x);
 --a--b--a-----b|
 */
 
-var result = fooCombined.pipe(distinctUntilChanged());
+var result = foo.pipe(distinctUntilChanged());
 
 result.subscribe(
   function (x) { console.log('next ' + x)},

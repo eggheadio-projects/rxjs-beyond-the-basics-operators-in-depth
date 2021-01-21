@@ -4,8 +4,9 @@ import "rxjs/add/observable/of";
 import "rxjs/add/observable/concat";
 import "rxjs/add/observable/interval";
 
-var foo = Observable.interval(500);
-var takeFour = foo.pipe(take(4));
+var foo = Observable.interval(500).pipe(
+  take(4)
+);
 // var more = Observable.of(4, 5, 6, 7, 8, 9);
 
 /*
@@ -17,8 +18,8 @@ var takeFour = foo.pipe(take(4));
 a-0--1--2--3|
 */
 
-// var bar = Observable.concat(takeFour, more);
-var bar = takeFour.pipe(startWith("a"));
+// var bar = Observable.concat(foo, more);
+var bar = foo.pipe(startWith("a"));
 
 bar.subscribe(
   function (x) {
