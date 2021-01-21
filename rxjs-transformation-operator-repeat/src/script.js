@@ -1,7 +1,15 @@
-var foo = Rx.Observable.interval(500)
-  .zip(Rx.Observable.of('a','b','c','d'), (x,y)=>y);
+import { Observable } from "rxjs";
+import { map, repeat } from 'rxjs/operators';
+import "rxjs/add/observable/interval";
+import "rxjs/add/observable/of";
+import "rxjs/add/observable/zip";
 
-var bar = foo.map(x => x.toUpperCase());
+var foo = Observable.of('a', 'b', 'c', 'd')
+var fooInterval = Observable.interval(500);
+var fooCombined = Observable.zip(foo, fooInterval, (x)=>x);
+
+
+var bar = fooCombined.pipe(map(x => x.toUpperCase()));
 
 /*
 --a--b--c--d|     (foo)
@@ -11,20 +19,10 @@ map(toUpperCase)
 --A--B--C--D--A--B--C--D--A--B--C--D|
 */
 
-var result = bar.repeat(3);
+var result = bar.pipe(repeat(3));
 
 result.subscribe(
-  function (x) { console.log('next ' + x) || displayInPreview('next ' + x); },
-  function (err) { console.log('error ' + err) || displayInPreview('error ' + err); },
-  function () { console.log('done') || displayInPreview('done'); },
+  function (x) { console.log('next ' + x)},
+  function (err) { console.log('error ' + err)},
+  function () { console.log('done')}
 );
-
-
-
-// display in plunker preview
-function displayInPreview(string) {
-  var newDiv = document.createElement("div"); 
-  var newContent = document.createTextNode(string); 
-  newDiv.appendChild(newContent);
-  document.body.appendChild(newDiv)
-}
