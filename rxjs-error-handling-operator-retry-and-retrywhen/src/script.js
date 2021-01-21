@@ -21,7 +21,7 @@ map(toUpperCase)
 --A--B--C--D-----------A--B--C--D-------------A--B--C--D---
 */
 
-// uncommet below to see retry operator
+// uncomment below to see retry operator
 // var result = bar.pipe(retry(2));
 
 var result = bar.pipe(retryWhen(errorObs => errorObs.pipe(delay(3000))));
