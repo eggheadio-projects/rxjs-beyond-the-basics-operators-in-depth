@@ -1,8 +1,7 @@
-import { Observable } from "rxjs";
-import { take, debounce, debounceTime } from "rxjs/operators";
-import "rxjs/add/observable/interval";
+import { interval } from "rxjs";
+import { take, debounce, debounceTime } from 'rxjs/operators';
 
-var foo = Observable.interval(100).pipe(
+let foo = interval(100).pipe(
   take(5)
 );
 
@@ -14,20 +13,14 @@ var foo = Observable.interval(100).pipe(
 */
 
 // uncomment the 3 lines below to see debounce code
-// var result = foo.pipe(debounce(() =>
-//   Observable.interval(1000)
+// let result = foo.pipe(debounce(() =>
+//   interval(1000)
 // ));
 
-var result = foo.pipe(debounceTime(5000));
+let result = foo.pipe(debounceTime(5000));
 
 result.subscribe(
-  function (x) {
-    console.log("next " + x);
-  },
-  function (err) {
-    console.log("error " + err);
-  },
-  function () {
-    console.log("done");
-  }
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

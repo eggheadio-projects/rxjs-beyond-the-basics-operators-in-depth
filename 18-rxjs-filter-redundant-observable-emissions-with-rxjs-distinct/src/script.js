@@ -1,13 +1,10 @@
-import { Observable } from "rxjs";
-import { take, distinctUntilChanged, zip } from "rxjs/operators";
-import "rxjs/add/observable/interval";
-import "rxjs/add/observable/of";
+import { of, interval, zip } from "rxjs";
+import { map, take, distinctUntilChanged } from 'rxjs/operators';
 
-var foo = Observable.interval(500).pipe(
-  zip(Observable.of('a', 'b', 'a', 'a', 'b'), (x,y)=>y),
+let foo = zip(interval(500), of('a', 'b', 'a', 'a', 'b')).pipe(
+  map(([x,y])=> y),
   take(5)
-);
-
+)
 
 /*
 --a--b--a--a--b|
@@ -15,10 +12,10 @@ var foo = Observable.interval(500).pipe(
 --a--b--a-----b|
 */
 
-var result = foo.pipe(distinctUntilChanged());
+let result = foo.pipe(distinctUntilChanged());
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')}
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

@@ -1,9 +1,7 @@
-// do is deprecated, use tap instead
-import { Observable } from "rxjs";
-import { take, tap, map } from "rxjs/operators";
-import "rxjs/add/observable/interval";
+import { interval } from "rxjs";
+import { take, tap, map } from 'rxjs/operators';
 
-var foo = Observable.interval(200).pipe(
+let foo = interval(200).pipe(
   take(4)
 );
 
@@ -17,20 +15,14 @@ foo: ---0---1---2---3--...
      ---0---2---4---6--...
 */
 
-var bar = foo.pipe(
+let bar = foo.pipe(
   tap((x) => console.log("before " + x)),
   map((x) => x * 2),
   tap((x) => console.log("after " + x))
 )
 
 bar.subscribe(
-  function (x) {
-    console.log("next " + x);
-  },
-  function (err) {
-    console.log("error " + err);
-  },
-  function () {
-    console.log("done");
-  }
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

@@ -1,14 +1,12 @@
-import { Observable } from "rxjs";
-import { take, buffer, zip } from "rxjs/operators";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/interval";
+import { interval, zip, of } from "rxjs";
+import { take, buffer, map } from 'rxjs/operators';
 
-var foo = Observable.interval(600).pipe(
-  zip(Observable.of('h', 'e', 'l', 'l', 'o'), (x, y) => y),
+let foo = zip(interval(600), of('h', 'e', 'l', 'l', 'o')).pipe(
+  map(([x, y]) => y),
   take(5)
 );
 
-var bar = Observable.interval(900).pipe(
+let bar = interval(900).pipe(
   take(3)
 )
 /*
@@ -20,10 +18,10 @@ var bar = Observable.interval(900).pipe(
 --------h--------e--------ll|
 */
 
-var result = foo.pipe(buffer(bar));
+let result = foo.pipe(buffer(bar));
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

@@ -1,13 +1,11 @@
-import { Observable } from "rxjs";
-import { take } from "rxjs/operators";
-import "rxjs/add/observable/merge";
-import "rxjs/add/observable/interval";
+import { interval, merge } from "rxjs";
+import { take } from 'rxjs/operators';
 
-var foo = Observable.interval(500).pipe(
+let foo = interval(500).pipe(
   take(4)
 );
 
-var bar = Observable.interval(300).pipe(
+let bar = interval(300).pipe(
   take(5)
 );
 
@@ -18,10 +16,10 @@ var bar = Observable.interval(300).pipe(
 --0-01--21-3--(24)-(3|)
 */
 
-var merged = Observable.merge(foo, bar);
+let merged = merge(foo, bar);
 
 merged.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

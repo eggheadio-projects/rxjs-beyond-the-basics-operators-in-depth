@@ -1,9 +1,7 @@
-import { Observable } from "rxjs";
-import { take, delayWhen, delay } from "rxjs/operators";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/interval";
+import { interval } from "rxjs";
+import { take, delayWhen, delay } from 'rxjs/operators';
 
-var foo = Observable.interval(100).pipe(
+let foo = interval(100).pipe(
   take(5)
 )
 
@@ -16,14 +14,14 @@ var foo = Observable.interval(100).pipe(
 // delay(1000)
 
 //uncomment below to see delay operator output
-// var result = foo.pipe(delay(2000))
+// let result = foo.pipe(delay(2000))
 
-var result = foo.pipe(delayWhen( x =>
-  Observable.interval(x * x * 100).pipe(take(1))
+let result = foo.pipe(delayWhen( x =>
+  interval(x * x * 100).pipe(take(1))
 ));
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

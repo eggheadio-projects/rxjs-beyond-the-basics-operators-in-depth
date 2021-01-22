@@ -1,17 +1,13 @@
-import { Observable } from "rxjs";
+import { of, interval, zip } from "rxjs";
 import { map, retryWhen, delay } from 'rxjs/operators';
 // uncomment below to see retry operator
 // import { retry } from 'rxjs/operators';
-import "rxjs/add/observable/interval";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/zip";
 
-var foo = Observable.of('a', 'b', 'c', 'd', 2)
-var fooInterval = Observable.interval(500);
-var fooCombined = Observable.zip(foo, fooInterval, (x)=>x);
+let foo = zip(interval(500), of('a', 'b', 'c', 'd', 2)).pipe(
+  map(([x,y])=> y)
+)
 
-
-var bar = fooCombined.pipe(map(x => x.toUpperCase()));
+let bar = foo.pipe(map(x => x.toUpperCase()));
 
 /*
 --a--b--c--d--2|     (foo)
@@ -22,12 +18,12 @@ map(toUpperCase)
 */
 
 // uncomment below to see retry operator
-// var result = bar.pipe(retry(2));
+// let result = bar.pipe(retry(2));
 
-var result = bar.pipe(retryWhen(errorObs => errorObs.pipe(delay(3000))));
+let result = bar.pipe(retryWhen(errorObs => errorObs.pipe(delay(3000))));
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

@@ -1,9 +1,8 @@
-import { Observable } from "rxjs";
-import { take, throttleTime } from "rxjs/operators";
-import "rxjs/add/observable/interval";
+import { interval } from "rxjs";
+import { take, throttleTime } from 'rxjs/operators';
 
 // setting the interval to 1000, makes the output the same as the instructors. 
-var foo = Observable.interval(1000).pipe(
+let foo = interval(1000).pipe(
   take(5)
 )
 
@@ -14,10 +13,10 @@ var foo = Observable.interval(1000).pipe(
 --0-----2-----4|
 */
 
-var result = foo.pipe(throttleTime(1000));
+let result = foo.pipe(throttleTime(1000));
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

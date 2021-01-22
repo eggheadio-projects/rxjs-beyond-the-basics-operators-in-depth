@@ -1,7 +1,6 @@
-import { Observable } from "rxjs";
-import "rxjs/add/observable/interval";
+import { interval, Observable } from "rxjs";
 
-var foo = Observable.interval(1000);
+let foo = interval(1000);
 
 /*
 
@@ -12,8 +11,8 @@ bar: ---0---2---4---6--...
 */
 
 function multiplyBy(multiplier) {
-  var source = this;
-  var result = Observable.create(function subscribe(observer) {
+  let source = this;
+  let result = new Observable(function subscribe(observer) {
     source.subscribe(
       function (x) { observer.next(x * multiplier); },
       function (err) { observer.error(err); },
@@ -25,10 +24,10 @@ function multiplyBy(multiplier) {
 
 Observable.prototype.multiplyBy = multiplyBy;
 
-var bar = foo.multiplyBy(2);
+let bar = foo.multiplyBy(2);
 
 bar.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')}
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

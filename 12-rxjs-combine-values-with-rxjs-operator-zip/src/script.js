@@ -1,12 +1,8 @@
-import { Observable } from "rxjs";
-import { take } from "rxjs/operators";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/zip";
-import "rxjs/add/observable/interval";
+import { interval, zip, of } from "rxjs";
+import { take } from 'rxjs/operators';
 
-
-var foo = Observable.of('h', 'e', 'l', 'l', 'o');
-var bar = Observable.interval(400).pipe(
+let foo = of('h', 'e', 'l', 'l', 'o');
+let bar = interval(400).pipe(
   take(5)
 )
 
@@ -27,10 +23,10 @@ var bar = Observable.interval(400).pipe(
 // withLatestFrom
 // zip
 
-var combined = Observable.zip(foo, bar, (x) => x);
+let combined = zip(foo, bar, (x) => x);
 
 combined.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')},
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

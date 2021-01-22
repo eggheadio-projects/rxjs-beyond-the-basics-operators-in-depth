@@ -1,8 +1,7 @@
-import { Observable } from "rxjs";
-import { last, takeLast, take } from "rxjs/operators";
-import "rxjs/add/observable/interval";
+import { interval } from "rxjs";
+import { take, last, takeLast } from 'rxjs/operators';
 
-var foo = Observable.interval(1000).pipe(
+let foo = interval(1000).pipe(
   take(5)
 );
 
@@ -15,17 +14,11 @@ var foo = Observable.interval(1000).pipe(
 */
 
 // Uncomment below to see last operator output
-// var bar = foo.pipe(last());
-var bar = foo.pipe(takeLast(2));
+// let bar = foo.pipe(last());
+let bar = foo.pipe(takeLast(2));
 
 bar.subscribe(
-  function (x) {
-    console.log("next " + x);
-  },
-  function (err) {
-    console.log("error " + err);
-  },
-  function () {
-    console.log("done");
-  }
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

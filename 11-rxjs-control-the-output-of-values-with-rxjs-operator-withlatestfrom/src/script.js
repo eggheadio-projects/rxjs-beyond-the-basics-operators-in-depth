@@ -1,17 +1,15 @@
-import { Observable } from "rxjs";
-import { take, withLatestFrom, zip } from "rxjs/operators";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/interval";
+// WIP
 
-var foo = Observable.interval(500).pipe(
+import { interval, zip, of } from "rxjs";
+import { take, withLatestFrom } from 'rxjs/operators';
+
+let foo = zip(interval(500), of("H", "e", "l", "l", "o").pipe(
   take(5),
-  zip(Observable.of("H", "e", "l", "l", "o"), (_, c) => c)
-)
+))
 
-var bar = Observable.interval(300).pipe(
+let bar = zip(interval(300), of(0, 1, 0, 1, 0, 1, 0).pipe(
   take(7),
-  zip(Observable.of(0, 1, 0, 1, 0, 1, 0), (_, x) => x)
-);
+));
 
 /*
 ----H----e----l----l----o|     (foo)
@@ -20,18 +18,12 @@ var bar = Observable.interval(300).pipe(
 ----h----e----L----L----o|
 */
 
-var combined = foo.pipe(withLatestFrom(bar, (c, n) =>
+let combined = foo.pipe(withLatestFrom(bar, ([c, n]) =>
   n === 1 ? c.toUpperCase() : c.toLowerCase()
 ));
 
 combined.subscribe(
-  function (x) {
-    console.log("next " + x);
-  },
-  function (err) {
-    console.log("error " + err);
-  },
-  function () {
-    console.log("done");
-  }
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

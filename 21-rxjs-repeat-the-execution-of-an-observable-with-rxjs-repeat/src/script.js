@@ -1,15 +1,12 @@
-import { Observable } from "rxjs";
+import { of, interval, zip } from "rxjs";
 import { map, repeat } from 'rxjs/operators';
-import "rxjs/add/observable/interval";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/zip";
 
-var foo = Observable.of('a', 'b', 'c', 'd')
-var fooInterval = Observable.interval(500);
-var fooCombined = Observable.zip(foo, fooInterval, (x)=>x);
+let foo = zip(interval(500), of('a', 'b', 'c', 'd')).pipe(
+  map(([x,y])=> y)
+)
 
 
-var bar = fooCombined.pipe(map(x => x.toUpperCase()));
+let bar = foo.pipe(map(x => x.toUpperCase()));
 
 /*
 --a--b--c--d|     (foo)
@@ -19,10 +16,10 @@ map(toUpperCase)
 --A--B--C--D--A--B--C--D--A--B--C--D|
 */
 
-var result = bar.pipe(repeat(3));
+let result = bar.pipe(repeat(3));
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')}
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

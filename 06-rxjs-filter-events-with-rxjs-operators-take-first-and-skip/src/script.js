@@ -1,8 +1,7 @@
-import { Observable } from "rxjs";
-import { skip, first, take } from "rxjs/operators";
-import "rxjs/add/observable/interval";
+import { interval } from "rxjs";
+import { first } from 'rxjs/operators';
 
-var foo = Observable.interval(100);
+let foo = interval(100);
 
 /*
 --0--1--2--3--4--5--6--7-
@@ -12,18 +11,12 @@ var foo = Observable.interval(100);
 */
 
 // uncomment below to see skip and take operators output
-// var bar = foo.pipe(skip(5))
-// var bar = foo.pipe(take(5));
-var bar = foo.pipe(first())
+// let bar = foo.pipe(skip(5))
+// let bar = foo.pipe(take(5));
+let bar = foo.pipe(first())
 
 bar.subscribe(
-  function (x) {
-    console.log("next " + x);
-  },
-  function (err) {
-    console.log("error " + err);
-  },
-  function () {
-    console.log("done");
-  }
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

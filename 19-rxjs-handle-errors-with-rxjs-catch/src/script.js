@@ -1,16 +1,11 @@
-// WIP https://auth0.com/blog/whats-new-in-rxjs-6/
+import { interval } from "rxjs";
+import { map, catchError } from 'rxjs/operators';
 
-import { Observable } from "rxjs";
-import { mapTo, map, catchError } from 'rxjs/operators';
-import "rxjs/add/observable/interval";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/zip";
-
-var foo = Observable.interval(500).pipe(
-  mapTo(Math.random((x)=> x)) 
+let foo = interval(500).pipe(
+  map(() => Math.random()) 
 )
 
-var bar = foo.pipe(
+let bar = foo.pipe(
   map( x => {
     if (x < 0.5) {
       return x
@@ -28,12 +23,12 @@ catch(# => -Z|)
 --A--B--C--D--Z|
 */
 
-var result = bar.pipe(
-  catchError((outputObs) => outputObs)
+let result = bar.pipe(
+  catchError((e, outputObs) => outputObs)
 );
 
 result.subscribe(
-  function (x) { console.log('next ' + x)},
-  function (err) { console.log('error ' + err)},
-  function () { console.log('done')}
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );

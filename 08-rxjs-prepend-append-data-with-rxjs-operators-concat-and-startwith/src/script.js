@@ -1,13 +1,10 @@
-import { Observable } from "rxjs";
-import { take, startWith } from "rxjs/operators";
-import "rxjs/add/observable/of";
-import "rxjs/add/observable/concat";
-import "rxjs/add/observable/interval";
+import { interval, of, concat } from "rxjs";
+import { take, startWith } from 'rxjs/operators';
 
-var foo = Observable.interval(500).pipe(
+let foo = interval(500).pipe(
   take(4)
 );
-// var more = Observable.of(4, 5, 6, 7, 8, 9);
+// let more = of(4, 5, 6, 7, 8, 9);
 
 /*
 --0--1--2--3--4--5--6--7-...
@@ -18,17 +15,11 @@ var foo = Observable.interval(500).pipe(
 a-0--1--2--3|
 */
 
-// var bar = Observable.concat(foo, more);
-var bar = foo.pipe(startWith("a"));
+// let bar = concat(foo, more);
+let bar = foo.pipe(startWith("a"));
 
 bar.subscribe(
-  function (x) {
-    console.log("next " + x);
-  },
-  function (err) {
-    console.log("error " + err);
-  },
-  function () {
-    console.log("done");
-  }
+  (x) => console.log('next ' + x),
+  (err) => console.log('error ' + err),
+  () => console.log('done')
 );
