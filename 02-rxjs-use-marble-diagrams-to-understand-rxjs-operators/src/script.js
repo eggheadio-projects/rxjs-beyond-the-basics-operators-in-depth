@@ -1,30 +1,28 @@
 import { interval, Observable } from "rxjs";
 
-let foo = interval(1000);
+const foo = interval(1000);
 
-/*
+function multiplyBy(number) {
+  const result = function (source) {
+    return new Observable((observer) => {
+      return source.subscribe({
+        next(x) {
+          observer.next(x * number);
+        },
+        error(err) {
+          observer.error(err);
+        },
+        complete() {
+          observer.complete();
+        }
+      });
+    });
+  };
 
-foo: ---0---1---2---3--...
-        multiplyBy(2)
-bar: ---0---2---4---6--...
-
-*/
-
-function multiplyBy(multiplier) {
-  let source = this;
-  let result = new Observable(function subscribe(observer) {
-    source.subscribe(
-      function (x) { observer.next(x * multiplier); },
-      function (err) { observer.error(err); },
-      function () { observer.complete(); }
-    );
-  });
   return result;
 }
 
-Observable.prototype.multiplyBy = multiplyBy;
-
-let bar = foo.multiplyBy(2);
+let bar = foo.pipe(multiplyBy(2));
 
 bar.subscribe(
   (x) => console.log('next ' + x),

@@ -1,33 +1,28 @@
 import { Observable, of } from "rxjs";
 
-let foo = of(1, 2, 3, 4, 5);
+let foo = of(1, 2, 3, 4, 5)
 
-// foo.map
-// foo.filter
-// foo.merge
-// foo.combineLatest
+function multiplyBy(number) {
+    const result = function (source) {
+      return new Observable((observer) => {
+        return source.subscribe({
+          next(x) {
+            observer.next(x * number);
+          },
+          error(err) {
+            observer.error(err);
+          },
+          complete() {
+            observer.complete();
+          }
+        });
+      });
+    };
+  
+    return result;
+  }
 
-function multiplyBy(multiplier) {
-  let source = this;
-  let result = new Observable(function subscribe(observer) {
-    source.subscribe(
-      function (x) {
-        observer.next(x * multiplier);
-      },
-      function (err) {
-        observer.error(err);
-      },
-      function () {
-        observer.complete();
-      }
-    );
-  });
-  return result;
-}
-
-Observable.prototype.multiplyBy = multiplyBy;
-
-let bar = foo.multiplyBy(100);
+let bar = foo.pipe(multiplyBy(100));
 
 bar.subscribe(
   (x) => console.log('next ' + x),
